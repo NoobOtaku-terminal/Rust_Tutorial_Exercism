@@ -1,11 +1,7 @@
-fn main() {
-    let a: String = String::from("ルbcd");
-
-    let chars: Vec<char> = a.chars().collect();
-    let length = chars.len();
-    
-    // Now you can use a usize index to access each character.
-    for i in 0..length {
-        println!("{}", chars[i]);
+fn main(){
+    let rohan:String = String::from("Rohanな");
+    for ch in rohan.chars(){
+        println!("{}",ch);
     }
+    println!("{:?}",rohan);
 }
