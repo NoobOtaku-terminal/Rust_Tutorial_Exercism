@@ -1,1 +1,49 @@
 
+#[derive(Debug, PartialEq, Eq)]
+pub enum Error {
+    InvalidInputBase,
+    InvalidOutputBase,
+    InvalidDigit(u32),
+}
+
+///
+/// Convert a number between two bases.
+///
+pub fn convert(number: &[u32], from_base: u32, to_base: u32) -> Result<Vec<u32>, Error> {
+    // Base must be at least 2
+    if from_base < 2 {
+        return Err(Error::InvalidInputBase);
+    }
+    if to_base < 2 {
+        return Err(Error::InvalidOutputBase);
+    }
+
+    // Validate all digits
+    for &digit in number {
+        if digit >= from_base {
+            return Err(Error::InvalidDigit(digit));
+        }
+    }
+
+    // Convert input number to base 10
+    let mut value: u128 = 0; // Use a large enough integer to prevent overflow
+    for &digit in number {
+        value = value * from_base as u128 + digit as u128;
+    }
+
+    // Special case for 0
+    if value == 0 {
+        return Ok(vec![0]);
+    }
+
+    // Convert base 10 value to the target base
+    let mut result = Vec::new();
+    let mut temp = value;
+    while temp > 0 {
+        result.push((temp % to_base as u128) as u32);
+        temp /= to_base as u128;
+    }
+
+    result.reverse();
+    Ok(result)
+}
